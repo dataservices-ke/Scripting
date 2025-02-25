@@ -1,4 +1,4 @@
-# check for duplicate answers within a survey, particularly in the context of iterations.
+# A funtion that checks for duplicate answers within a survey, particularly in the context of iterations.
 OSM.Survey.FnDuplicateAnswers = function(e) {
 
 OSM.NotificationSystem.hideAllNotifications();
