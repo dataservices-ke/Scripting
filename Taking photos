@@ -1,0 +1,14 @@
+# configuring attachment settings so that only the 'allowTakingPhotos' option is enabled while restricting all other media options.
+
+OSM.Survey.picture.get("visualization").set("allowTakingPhotos", true);
+OSM.Survey.picture.get("visualization").set("allowPickingPhotos", false);
+OSM.Survey.picture.get("visualization").set("allowPickingAudio", false);
+OSM.Survey.picture.get("visualization").set("allowPickingVideo", false);
+OSM.Survey.picture.get("visualization").set("allowRecordingAudio", false);
+OSM.Survey.picture.get("visualization").set("allowRecordingVideo", false);
+
+// When having a script that requires taking photos & especially for RCI scripts, Add the below script on initialization after you have set up the question.
+if (OSM.Survey.get('activeEnvironment').isMobiAudit()){
+               if(typeof MobiAudit.setAllowPickFileAttachment === "function"){
+                               MobiAudit.setAllowPickFileAttachment(false);
+               }}
