@@ -1,0 +1,33 @@
+#install ppt libraies in terminal
+pip install python-pptx
+
+from pptx import Presentation
+import os
+
+def extract_images_from_ppt(ppt_path, output_folder):
+    # Load the PowerPoint presentation
+    prs = Presentation(ppt_path)
+
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Iterate through slides
+    for slide_index, slide in enumerate(prs.slides):
+        # Iterate through shapes in the slide
+        for shape_index, shape in enumerate(slide.shapes):
+            # Check if the shape is a picture
+            if shape.shape_type == 13:  # 13 corresponds to PICTURE
+                # Extract the image
+                image = shape.image
+                # Define the output path
+                image_path = os.path.join(output_folder, f"slide_{slide_index + 1}_shape_{shape_index + 1}.{image.ext}")
+                # Save the image
+                with open(image_path, 'wb') as f:
+                    f.write(image.blob)
+                print(f"Saved image to {image_path}")
+
+# Example usage
+ppt_path = "C:/Users/Easter.Audi/Downloads/pp/BHT Scripting Template.pptx"
+output_folder = "C:/Users/Easter.Audi/Downloads/images"
+extract_images_from_ppt(ppt_path, output_folder)
