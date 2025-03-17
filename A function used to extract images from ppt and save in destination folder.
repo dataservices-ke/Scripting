@@ -21,7 +21,7 @@ def extract_images_from_ppt(ppt_path, output_folder):
                 # Extract the image
                 image = shape.image
                 # Define the output path
-                image_path = os.path.join(output_folder, f"slide_{slide_index + 1}_shape_{shape_index + 1}.{image.ext}")
+                image_path = os.path.join(output_folder, f"slide_{slide_index + 1}_shape_{shape_index + 1}.png")
                 # Save the image
                 with open(image_path, 'wb') as f:
                     f.write(image.blob)
