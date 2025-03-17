@@ -1,4 +1,4 @@
-#ipi install pandas openpyxl
+#pip install pandas openpyxl
 
 import os
 import pandas as pd
