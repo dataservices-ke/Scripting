@@ -1,0 +1,33 @@
+OSM.Survey.validSum = function (e) {
+    OSM.NotificationSystem.hideAllNotifications();
+
+    let total = 0; 
+    let validGrid = true; 
+
+    q.Q9.getVisibleIterations().forEach(function (it) {
+        if (it.get('objectName') !== "_111") {
+            let tempValue = parseInt(it.Q9x.getComment(), 10);
+
+            if (!isNaN(tempValue)) {
+                if (tempValue < 0) {
+                    validGrid = false;
+                } else {
+                    total += tempValue;
+                }
+            }
+        }
+    });
+
+    q.Q9["_111"].Q9x.setComment(total);
+
+    if (validGrid && total === 100 && q.Q9.get('isVisible')) {
+        return {
+            status: true
+        };
+    } else {
+        return {
+            status: false,
+            message: "(ERROR!!) <br> TOTAL MUST EQUAL 100%"
+        };
+    }
+};
