@@ -1,0 +1,26 @@
+
+OSM.Survey.myUniversalFunc = function(e){
+//hide previous notifications each time you start:
+OSM.NotificationSystem.hideAllNotifications();
+var ans;
+var sum = 0;
+var runVal = true;
+//loop throught the visible iteration of any loop:
+e.sourceElement.parent().parent().getVisibleIterations().forEach(function(iteration){
+//use a flag to check if all iterations have been answered, before showing error message:
+runVal = !iteration[e.sourceElement.get('objectName')].isBlank() && runVal;    
+//get the comment of the question:
+ans = parseInt(iteration[e.sourceElement.get('objectName')].getComment());
+ //once you have the value - you can use it for anything. For example check the sum:
+ if (!isNaN(ans)){          
+     sum += ans;       
+    }   
+});
+
+if((sum!==100) && runVal) {
+return {status:false, message: "Error!"};
+    }
+else{
+return {status:true};
+    }
+};
