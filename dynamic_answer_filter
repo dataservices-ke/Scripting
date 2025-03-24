@@ -1,0 +1,11 @@
+var value_D = OSM.Survey.D1_D2_D3.getAnswers();
+var valueD6 = OSM.Survey.D6.getAnswers();
+
+var valuesMatch = OSM.Survey.ExpressionParser.functions.containsExactly(value_D, valueD6);
+
+if (valuesMatch) {
+    e.sourceElement.hide();
+} else {
+    e.sourceElement.hideAnswers();
+    e.sourceElement.showAnswers(OSM.Survey.ExpressionParser.execute("D1_D2_D3-D6"));
+}
