@@ -1,0 +1,79 @@
+const marketCoordinates = {
+    "_1": { latitude: "5.115938", longitude: "7.33431" },
+    "_2": { latitude: "5.10233", longitude: "7.358992" },
+    "_3": { latitude: "9.274303", longitude: "12.436603" },
+    "_4": { latitude: "6.144051", longitude: "6.782973" },
+    "_5": { latitude: "6.127777", longitude: "6.786215" },
+    "_6": { latitude: "7.32271", longitude: "9.003311" },
+    "_7": { latitude: "7.726485", longitude: "8.47933" },
+    "_8": { latitude: "7.191416", longitude: "8.136453" },
+    "_9": { latitude: "5.517084", longitude: "5.762259" },
+    "_10": { latitude: "6.309321", longitude: "8.126235" },
+    "_11": { latitude: "6.337655", longitude: "5.621904" },
+    "_12": { latitude: "6.327594", longitude: "5.62007" },
+    "_13": { latitude: "6.435731", longitude: "7.484325" },
+    // "_13": { latitude: "-1.248648", longitude: "36.696066" },
+    "_14": { latitude: "9.021846", longitude: "7.491526" },
+    "_15": { latitude: "9.068617", longitude: "7.466497" },
+    "_16": { latitude: "9.919179", longitude: "8.891236" },
+    "_17": { latitude: "10.518509", longitude: "7.426939" },
+    "_18": { latitude: "12.006937", longitude: "8.537287" },
+    "_19": { latitude: "8.4988", longitude: "4.562287" },
+    "_20": { latitude: "8.474067", longitude: "4.505298" },
+    "_21": { latitude: "8.489329", longitude: "4.535333" },
+    "_22": { latitude: "6.618986", longitude: "3.32359" },
+    "_23": { latitude: "6.458875", longitude: "3.3831" },
+    "_24": { latitude: "6.459343", longitude: "3.247361" },
+    "_25": { latitude: "6.619366", longitude: "3.510388" },
+    "_26": { latitude: "6.484896", longitude: "3.364239" },
+    "_27": { latitude: "6.529548", longitude: "3.355641" },
+    "_28": { latitude: "7.376487", longitude: "3.886533" },
+    "_29": { latitude: "7.434969", longitude: "3.914994" },
+    "_30": { latitude: "7.39257", longitude: "3.955096" },
+    "_31": { latitude: "4.802624", longitude: "6.992331" },
+    "_32": { latitude: "4.792156", longitude: "7.00195" }
+};
+
+for (const selectedMarket in marketCoordinates) {
+    if (q.OPEN_MKT.isAnswerSelected([selectedMarket])) {
+        const coordinates = marketCoordinates[selectedMarket];
+        q.Latitude.setComment(coordinates.latitude);
+        q.Longitude.setComment(coordinates.longitude);
+    }
+}
+
+if (q.get("activeEnvironment").isMobiAudit()){
+var latt= q.get('activeEnvironment').getLocation()["latitude"]
+var longi= q.get('activeEnvironment').getLocation()["longitude"]
+}
+
+q.currentLatitude.setComment(latt);
+q.currentLongitude.setComment(longi);
+
+this.get("navigation").set("isAllowGoingForth", false);
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance;
+}
+
+const marketLat = parseFloat(q.Latitude.getComment());
+const marketLon = parseFloat(q.Longitude.getComment());
+const currentLat = parseFloat(q.currentLatitude.getComment());
+const currentLon = parseFloat(q.currentLongitude.getComment());
+
+const distance = calculateDistance(marketLat, marketLon, currentLat, currentLon);
+
+if (distance > 2) {
+    OSM.NotificationSystem.notifyModal("You are more than 2 km away from the market.");
+} else {
+    this.get("navigation").set("isAllowGoingForth", true);
+}
